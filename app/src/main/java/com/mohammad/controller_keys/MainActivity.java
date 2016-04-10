@@ -43,10 +43,10 @@ public class MainActivity extends AppCompatActivity {
 //        delete();
 
 
-        if (numbers.size()==0){
-            hints.add(1+"");
-            numbers.add(1+"");
-        }
+//        if (numbers.size()==0){
+            hints.add("new");
+            numbers.add("add");
+//        }
         for (int i=0;i<numbers.size()-1;i++){
             HashMap<String , String> data=new HashMap<>();
             data.put("number", numbers.get(i));
