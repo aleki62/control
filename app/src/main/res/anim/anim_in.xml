@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <set xmlns:android="http://schemas.android.com/apk/res/android">
-    <scale
-        android:interpolator="@android:anim/linear_interpolator"
-        android:fromXScale="0.0"
-        android:toXScale="1.0"
-        android:fromYScale="0.0"
-        android:toYScale="1.0"
-        android:fillAfter="true"
-        android:startOffset="200"
-        android:duration="2000"
-        android:pivotX = "0%"
-        android:pivotY = "2%"
-        />
-    <translate
+    <!--<scale-->
+        <!--android:interpolator="@android:anim/cycle_interpolator"-->
+        <!--android:fromXScale="0.0"-->
+        <!--android:toXScale="1.0"-->
+        <!--android:fromYScale="0.0"-->
+        <!--android:toYScale="1.0"-->
+        <!--android:fillAfter="true"-->
+        <!--android:startOffset="200"-->
+        <!--android:duration="2000"-->
+        <!--android:pivotX = "0%"-->
+        <!--android:pivotY = "2%"-->
+        <!--/>-->
+    <alpha
+        android:interpolator="@android:animator/fade_in"
         android:fromYDelta="0%p"
         android:toYDelta="100%p"
         android:startOffset="200"
-        android:duration="200"
+        android:duration="20000"
         />
 </set>

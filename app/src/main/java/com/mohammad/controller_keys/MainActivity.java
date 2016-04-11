@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.ContextThemeWrapper;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -35,25 +36,23 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         gw=(GridView) findViewById(R.id.gw);
-        WritesharedPrefrence("1","+");
-        ReadSharedPrefrence("12");
         SetMaxNumber();
-//        delete();
         init();
-//        delete();
 
 
-//        if (numbers.size()==0){
+        if (maxNumber==0){
             hints.add("new");
             numbers.add("add");
-//        }
-        for (int i=0;i<numbers.size()-1;i++){
+
+        }
+
+        for (int i=0;i<numbers.size();i++){
             HashMap<String , String> data=new HashMap<>();
             data.put("number", numbers.get(i));
             data.put("hint",hints.get(i));
             Strings.add(data);
         }
-        final AlertDialog.Builder alert = new AlertDialog.Builder(this,R.style.MyAnimation_Window);
+        final AlertDialog.Builder alert = new AlertDialog.Builder(new ContextThemeWrapper(this,R.style.MyAnimation_Window));
         myAdapter=new myAdapter(getApplicationContext(),Strings);
             gw.setAdapter(myAdapter);
             gw.setLongClickable(true);
@@ -71,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
                             hints.set(position, newData);
                             myAdapter.notifyDataSetChanged();
                             Strings.clear();
-                            for (int i = 0; i < numbers.size()-1; i++) {
+                            for (int i = 0; i < numbers.size(); i++) {
                                 HashMap<String, String> data = new HashMap<>();
                                 data.put("number", numbers.get(i));
                                 data.put("hint", hints.get(i));
@@ -177,7 +176,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void init(){
-        for(int i=0;i<=maxNumber-1;i++){
+        for(int i=0;i<maxNumber;i++){
 //            if (i==maxNumber-1){
 //                numbers.add("add");
 //                hints.add("new");
