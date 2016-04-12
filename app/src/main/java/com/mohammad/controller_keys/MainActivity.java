@@ -4,20 +4,25 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.ContextThemeWrapper;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.GridView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import de.keyboardsurfer.android.widget.crouton.Configuration;
+import de.keyboardsurfer.android.widget.crouton.Crouton;
+import de.keyboardsurfer.android.widget.crouton.Style;
 
 public class MainActivity extends AppCompatActivity {
     private static myAdapter myAdapter;
@@ -69,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
                             ReplaceSharedPrefrence(position + "", newData);
                             hints.set(position, newData);
                             myAdapter.notifyDataSetChanged();
+                            crouton("راهنمای جدید ذخیره شد");
                             Strings.clear();
                             for (int i = 0; i < numbers.size(); i++) {
                                 HashMap<String, String> data = new HashMap<>();
@@ -107,9 +113,9 @@ public class MainActivity extends AppCompatActivity {
                         Strings.get(position).put("number", Integer.toString(maxNumber));
                         Strings.get(position).put("hint", Integer.toString(maxNumber));
 //                        myAdapter.add(a);
-                        Toast.makeText(getApplicationContext(), "new number added" + maxNumber, Toast.LENGTH_SHORT).show();
+                        crouton("کلید جدید ساخته شد"+maxNumber);
                     } else
-                        Toast.makeText(getApplicationContext(), "selected number " + itemClicked, Toast.LENGTH_SHORT).show();
+                        crouton("انتخاب شد"+itemClicked);
                 }
             });
             System.out.println("new data is : "+newData);
@@ -177,15 +183,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void init(){
         for(int i=0;i<maxNumber;i++){
-//            if (i==maxNumber-1){
-//                numbers.add("add");
-//                hints.add("new");
-//            }
-//            else{
+
            numbers.add(String.valueOf(i));
             hints.add(ReadSharedPrefrence(String.valueOf(i)));
-//        }
-            System.out.println(numbers.toString());
         }
     }
 
@@ -195,6 +195,39 @@ public class MainActivity extends AppCompatActivity {
         editor.clear();
         editor.commit();
     }
+public void crouton(String a){
 
+        Configuration croutonConfiguration = new Configuration.Builder()
+                .setDuration(2500).build();
+        Style InfoStyle = new Style.Builder()
+                .setTextShadowRadius(1)
+                .setBackgroundColorValue(Color.parseColor("#0099cc"))
+                .setGravity(Gravity.CENTER_HORIZONTAL)
+                .setConfiguration(croutonConfiguration)
+                .setHeight(110)
+                .setTextColorValue(Color.parseColor("#323a2c")).setImageResource(R.mipmap.ic_launcher).build();
+
+
+
+        Style AlertStyle = new Style.Builder()
+                .setBackgroundColorValue(Color.parseColor("#cc0000"))
+                .setGravity(Gravity.CENTER_HORIZONTAL)
+                .setConfiguration(croutonConfiguration)
+                .setHeight(110)
+                .setTextColorValue(Color.parseColor("#323a2c")).setImageResource(R.mipmap.ic_launcher).build();
+
+
+        Style ConfirmStyle = new Style.Builder()
+                .setBackgroundColorValue(Color.parseColor("#FF00FF0D"))
+                .setGravity(Gravity.CENTER_HORIZONTAL)
+                .setConfiguration(croutonConfiguration)
+                .setHeight(110)
+                .setTextColorValue(Color.parseColor("#323a2c")).setImageResource(R.mipmap.ic_launcher).build();
+    if (a.contains("انتخاب")) {
+        Crouton.makeText(this, a, InfoStyle).show();
+    }
+    else
+        Crouton.makeText(this,a,ConfirmStyle).show();
+    }
 
 }
