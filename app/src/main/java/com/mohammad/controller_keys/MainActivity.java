@@ -87,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
 //                    mdialog.getWindow().getAttributes().windowAnimations = R.style.MyAnimation_Window;
                     mdialog.setTitle("راهنمای جدید را وارد کنید");
                     final EditText meditText = (EditText) mdialog.findViewById(R.id.editText3);
+                    meditText.setText("");
                     Button button = (Button) mdialog.findViewById(R.id.mbutton);
 //                    mdialog.getWindow().setGravity(Gravity.BOTTOM);
 
@@ -122,7 +123,6 @@ public class MainActivity extends AppCompatActivity {
                             mdialog.cancel();
                         }
                     });
-
                     mdialog.show();
                     return true;
                 }
