@@ -26,5 +26,6 @@ dependencies {
     compile 'com.android.support:design:23.1.1'
     compile 'info.hoang8f:fbutton:1.0.5'
     compile('de.keyboardsurfer.android.widget:crouton:1.8.5@aar')
-
+    compile 'com.github.florent37:viewanimator:1.0.3@aar'
+    compile 'com.nineoldandroids:library:2.4.0'
 }

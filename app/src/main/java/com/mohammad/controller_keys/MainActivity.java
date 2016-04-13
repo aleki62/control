@@ -1,6 +1,7 @@
 package com.mohammad.controller_keys;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
@@ -10,12 +11,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.ContextThemeWrapper;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.Toast;
+
+import com.github.florent37.viewanimator.ViewAnimator;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,15 +46,20 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        crouton("خوش آمدید");
         gw=(GridView) findViewById(R.id.gw);
         SetMaxNumber();
         init();
 
 
+//        final mdialog mdialog=new mdialog(this,R.style.MyAnimation_Window);
+//        mdialog.show();
+        final Dialog mdialog=new Dialog(new ContextThemeWrapper(this, R.style.DialogSlideAnim));
+        mdialog.setContentView(R.layout.mdialog);
+
         if (maxNumber==0){
             hints.add("new");
             numbers.add("add");
-
         }
 
         for (int i=0;i<numbers.size();i++){
@@ -57,24 +68,48 @@ public class MainActivity extends AppCompatActivity {
             data.put("hint",hints.get(i));
             Strings.add(data);
         }
-        final AlertDialog.Builder alert = new AlertDialog.Builder(new ContextThemeWrapper(this,R.style.MyAnimation_Window));
+//        final AlertDialog.Builder alert = new AlertDialog.Builder(new ContextThemeWrapper(this,R.style.MyAnimation_Window));
         myAdapter=new myAdapter(getApplicationContext(),Strings);
             gw.setAdapter(myAdapter);
             gw.setLongClickable(true);
+                         ViewAnimator
+                                    .animate(gw)
+                                    .translationY(-2000, 0)
+                                 .textColor(Color.BLUE)
+                                    .alpha(0, 1)
+                                    .dp().translationX(0, 0)
+                                    .descelerate()
+                                    .duration(2000)
+                                    .start();
             gw.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                 @Override
                 public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
-                    editText = new EditText(MainActivity.this);
-                    alert.setMessage("راهنمای جدید را وارد کنید");
-                    alert.setTitle("ویرایش راهنما");
-                    alert.setView(editText);
-                    alert.setPositiveButton("ذخیره", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int whichButton) {
-                            newData = editText.getText().toString();
+//                    mdialog.getWindow().getAttributes().windowAnimations = R.style.MyAnimation_Window;
+                    mdialog.setTitle("راهنمای جدید را وارد کنید");
+                    final EditText meditText = (EditText) mdialog.findViewById(R.id.editText3);
+                    Button button = (Button) mdialog.findViewById(R.id.mbutton);
+//                    mdialog.getWindow().setGravity(Gravity.BOTTOM);
+
+                    ViewAnimator
+                            .animate(meditText)
+                            .translationY(0, 0)
+                            .alpha(0, 1)
+                            .flash()
+                            .descelerate()
+                            .duration(3000)
+                            .start();
+
+                    button.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                            Toast.makeText(getApplicationContext(), meditText.getText().toString(), Toast.LENGTH_SHORT).show();
+
+                            newData = meditText.getText().toString();
+                            crouton("راهنمای جدید ذخیره شد");
                             ReplaceSharedPrefrence(position + "", newData);
                             hints.set(position, newData);
                             myAdapter.notifyDataSetChanged();
-                            crouton("راهنمای جدید ذخیره شد");
                             Strings.clear();
                             for (int i = 0; i < numbers.size(); i++) {
                                 HashMap<String, String> data = new HashMap<>();
@@ -84,13 +119,14 @@ public class MainActivity extends AppCompatActivity {
                                 myAdapter.books = Strings;
                             }
                             myAdapter.notifyDataSetChanged();
+                            mdialog.cancel();
                         }
                     });
-                    alert.show();
 
-                return true;
-            }
-    });
+                    mdialog.show();
+                    return true;
+                }
+            });
 
             gw.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
@@ -103,19 +139,14 @@ public class MainActivity extends AppCompatActivity {
                         a.put("hint", "new");
                         maxNumber += 1;
                         WritesharedPrefrence(maxNumber + "", "*");
-//                        numbers.add(maxNumber + "");
-//                        hints.add(maxNumber + "");
-
                         a.put("number", "add");
                         a.put("hint", "new");
                         myAdapter.add(a);
-//
                         Strings.get(position).put("number", Integer.toString(maxNumber));
                         Strings.get(position).put("hint", Integer.toString(maxNumber));
-//                        myAdapter.add(a);
-                        crouton("کلید جدید ساخته شد"+maxNumber);
+                        crouton("کلید جدید ساخته شد" + maxNumber);
                     } else
-                        crouton("انتخاب شد"+itemClicked);
+                        crouton("انتخاب شد" + itemClicked);
                 }
             });
             System.out.println("new data is : "+newData);
@@ -183,10 +214,15 @@ public class MainActivity extends AppCompatActivity {
 
     public void init(){
         for(int i=0;i<maxNumber;i++){
-
-           numbers.add(String.valueOf(i));
-            hints.add(ReadSharedPrefrence(String.valueOf(i)));
-        }
+            if (i==maxNumber-1){
+                numbers.add("add");
+                hints.add("new");
+            }
+            else {
+                numbers.add(String.valueOf(i));
+                hints.add(ReadSharedPrefrence(String.valueOf(i)));
+            }
+            }
     }
 
     public void delete(){
